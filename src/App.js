@@ -6,6 +6,8 @@ function App() {
   const [autor, setAutor] = useState('')
   const [idPost, setIdPost] = useState('')
   const [posts, setPosts] = useState([])
+  const [email, setEmail] = useState('')
+  const [senha, setSenha] = useState('')
 
   useEffect(() => {
     async function loadPosts() {
@@ -89,13 +91,19 @@ function App() {
     })
   }
 
+  function cadastrarNovoUsuario () {
+    alert('teste')
+  }
+
   return (
     <div className="App">
-      E-mail:<input type="email"/> <br/>
-      Senha:<input type="text"/> <br/><br/>
-      <button>Logar</button> 
-      <button>Cadastrar</button> <br/><br/>
-
+      E-mail:<input type="email" value={email} onChange={e => setEmail(e.target.value)}/> <br/>
+      Senha:<input type="text" value={senha} onChange={e => setSenha(e.target.value)}/> <br/><br/>
+      {/* <button>Logar</button>  */}
+      <button onClick={cadastrarNovoUsuario} >Cadastrar</button> <br/><br/>
+      
+      <hr/>
+      <h2>Banco de dados:</h2>
       ID:<input type="text" value={idPost} onChange={e => setIdPost(e.target.value)} /> <br />
       Titulo:<input value={titulo} type="text" onChange={(e) => setTitulo(e.target.value)} /> <br />
       Autor:<input value={autor} type="text" onChange={(e) => setAutor(e.target.value)} /> <br />
