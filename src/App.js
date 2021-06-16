@@ -100,7 +100,8 @@ function App() {
       .catch(error => {
         console.log(error.code)
         const message = {
-          'auth/weak-password': 'Senha muito fraca'
+          'auth/weak-password': 'Senha muito fraca',
+          'auth/email-already-in-use': 'Email já existente'
         }[error.code]
 
         alert(message)
