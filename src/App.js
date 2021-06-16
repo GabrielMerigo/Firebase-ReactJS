@@ -4,10 +4,16 @@ import { useState, useEffect } from 'react'
 function App() {
   const [titulo, setTitulo] = useState('')
   const [autor, setAutor] = useState('')
+
   const [idPost, setIdPost] = useState('')
   const [posts, setPosts] = useState([])
+
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
+
+  const [user, setUser] = useState(false)
+  const [userLogged, setUserLogged] = useState({})
+
 
   useEffect(() => {
     async function loadPosts() {
@@ -27,6 +33,24 @@ function App() {
     }
 
     loadPosts()
+  }, [])
+
+  useEffect(() => {
+    async function checkLogin(){
+      await firebase.auth().onAuthStateChanged((user) => {
+        if(user){
+          setUser(true)
+          setUserLogged({
+            uid: user.uid,
+            email: user.email
+          })
+        }else{
+          setUser(false)
+        }
+      })
+    }
+
+    checkLogin()
   }, [])
 
   async function handleAdd() {
@@ -68,6 +92,7 @@ function App() {
   async function editarPost() {
     await firebase.firestore().collection('posts')
       .doc(idPost)
+      
       .update({
         titulo: titulo,
         autor: autor
@@ -108,11 +133,14 @@ function App() {
       })
   }
 
+  async function logout(){
+    await firebase.auth().signOut();
+  }
+
   return (
     <div className="App">
       E-mail:<input type="email" value={email} onChange={e => setEmail(e.target.value)}/> <br/>
       Senha:<input type="text" value={senha} onChange={e => setSenha(e.target.value)}/> <br/><br/>
-      {/* <button>Logar</button>  */}
       <button onClick={cadastrarNovoUsuario} >Cadastrar</button> <br/><br/>
 
       <hr/>
@@ -123,6 +151,8 @@ function App() {
       <button onClick={buscarPost}>Buscar Post</button>
       <button onClick={handleAdd}>Cadastrar</button>
       <button onClick={editarPost}>Editar</button>
+      <button onClick={logout}>Sair da Conta</button>
+
       {
         posts.map(post => {
           return (
