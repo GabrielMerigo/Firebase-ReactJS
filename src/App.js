@@ -36,16 +36,17 @@ function App() {
   }, [])
 
   useEffect(() => {
-    async function checkLogin(){
+    async function checkLogin() {
       await firebase.auth().onAuthStateChanged((user) => {
-        if(user){
+        if (user) {
           setUser(true)
           setUserLogged({
             uid: user.uid,
             email: user.email
           })
-        }else{
+        } else {
           setUser(false)
+          setUserLogged({})
         }
       })
     }
@@ -92,7 +93,7 @@ function App() {
   async function editarPost() {
     await firebase.firestore().collection('posts')
       .doc(idPost)
-      
+
       .update({
         titulo: titulo,
         autor: autor
@@ -110,13 +111,13 @@ function App() {
 
   async function excluirPost(id) {
     await firebase.firestore().collection('posts')
-    .doc(id).delete()
-    .then(() => {
-      alert('post excluido')
-    })
+      .doc(id).delete()
+      .then(() => {
+        alert('post excluido')
+      })
   }
 
-  async function cadastrarNovoUsuario () {
+  async function cadastrarNovoUsuario() {
     await firebase.auth().createUserWithEmailAndPassword(email, senha)
       .then(user => {
         alert('cadastrado com sucesso')
@@ -133,17 +134,26 @@ function App() {
       })
   }
 
-  async function logout(){
+  async function logout() {
     await firebase.auth().signOut();
   }
 
   return (
     <div className="App">
-      E-mail:<input type="email" value={email} onChange={e => setEmail(e.target.value)}/> <br/>
-      Senha:<input type="text" value={senha} onChange={e => setSenha(e.target.value)}/> <br/><br/>
-      <button onClick={cadastrarNovoUsuario} >Cadastrar</button> <br/><br/>
+      {user &&
+        <div>
+          <strong>Seja bem-vindo você está logado.</strong>
+          <p>{userLogged.uid}</p>
+          <p>{userLogged.email}</p>
+        </div>
+      }
 
-      <hr/>
+
+      E-mail:<input type="email" value={email} onChange={e => setEmail(e.target.value)} /> <br />
+      Senha:<input type="text" value={senha} onChange={e => setSenha(e.target.value)} /> <br /><br />
+      <button onClick={cadastrarNovoUsuario} >Cadastrar</button> <br /><br />
+
+      <hr />
       <h2>Banco de dados:</h2>
       ID:<input type="text" value={idPost} onChange={e => setIdPost(e.target.value)} /> <br />
       Titulo:<input value={titulo} type="text" onChange={(e) => setTitulo(e.target.value)} /> <br />
