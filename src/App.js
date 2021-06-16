@@ -91,8 +91,20 @@ function App() {
     })
   }
 
-  function cadastrarNovoUsuario () {
-    alert('teste')
+  async function cadastrarNovoUsuario () {
+    await firebase.auth().createUserWithEmailAndPassword(email, senha)
+      .then(user => {
+        alert('cadastrado com sucesso')
+        console.log(user)
+      })
+      .catch(error => {
+        console.log(error.code)
+        const message = {
+          'auth/weak-password': 'Senha muito fraca'
+        }[error.code]
+
+        alert(message)
+      })
   }
 
   return (
@@ -101,7 +113,7 @@ function App() {
       Senha:<input type="text" value={senha} onChange={e => setSenha(e.target.value)}/> <br/><br/>
       {/* <button>Logar</button>  */}
       <button onClick={cadastrarNovoUsuario} >Cadastrar</button> <br/><br/>
-      
+
       <hr/>
       <h2>Banco de dados:</h2>
       ID:<input type="text" value={idPost} onChange={e => setIdPost(e.target.value)} /> <br />
