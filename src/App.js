@@ -1,16 +1,16 @@
 import '../src/styles/styles.css'
-import { useState } from 'react';  
+import { useState } from 'react';
 import Alunos from '../src/components/Alunos'
-
+import UserProvider from './contexts/user'
 
 function App() {
-  const [aluno, setAluno] = useState('Marco Antonio')
-
   return (
-    <div className="App">
-      <h1>Context API</h1>
-      <Alunos nome={aluno}  mudaNome={setAluno} />
-    </div>
+    <UserProvider>
+      <div className="App">
+        <h1>Context API</h1>
+        <Alunos />
+      </div>
+    </UserProvider>
   );
 }
 
