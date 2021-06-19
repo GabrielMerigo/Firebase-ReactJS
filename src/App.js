@@ -1,5 +1,4 @@
 import '../src/styles/styles.css'
-import { useState } from 'react';
 import Alunos from '../src/components/Alunos'
 import UserProvider from './contexts/user'
 

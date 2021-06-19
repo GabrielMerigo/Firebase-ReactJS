@@ -1,17 +1,16 @@
-import { Context } from '../../contexts/user';
 import { useContext } from 'react';
+import { UserContext } from '../../contexts/user'
 
 function Nome() {
-  const { alunos, setAlunos } = useContext(Context)
+  const { aluno, setAluno, qtdAlunos, setQtdAlunos } = useContext(UserContext)
 
   return (
-    <div className="App">
-      <hr />
-      <h3>Aluno de Nome: {alunos}</h3>
-      <br />
-      <button onClick={() => setAlunos('Neilton')}>Mudar Nome</button>
+    <div>
+      <h1>Nome: {aluno}</h1>
+      <button onClick={() => setAluno('Thiago')}>Trocar Nome</button>
+      <button onClick={() => setQtdAlunos(qtdAlunos + 1)}>Aumentar qtd alunos</button><span>Numero de alunos: {qtdAlunos}</span>
     </div>
-  );
+  )
 }
 
-export default Nome;
+export default Nome
